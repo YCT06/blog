@@ -25,3 +25,7 @@ Thumbs.db
 
 # jetbrains setting folder
 .idea/
+
+# local planning and prototypes
+/BLOG_PLAN.md
+/prototype/
