@@ -1,0 +1,44 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { listArticles } from "../../lib/articles";
+import { TAG_IDS, TAG_LABELS, type TagId } from "../../data/taxonomy";
+
+export function getStaticPaths() {
+  return TAG_IDS.map((tag) => ({
+    params: { slug: tag },
+    props: { tag },
+  }));
+}
+
+interface Props {
+  tag: TagId;
+}
+
+const { tag } = Astro.props;
+const tagName = TAG_LABELS[tag];
+const articles = await listArticles({ tag });
+---
+
+<Layout title={tagName}>
+  <main>
+    <a href="/tags/">所有標籤</a>
+    <h1>{tagName}</h1>
+
+    {articles.length === 0 && <p>這個標籤目前還沒有文章。</p>}
+
+    <ul>
+      {
+        articles.map((article) => (
+          <li>
+            <h2>
+              <a href={`/articles/${article.data.slug}/`}>
+                {article.data.title}
+              </a>
+            </h2>
+            <p>{article.data.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</Layout>

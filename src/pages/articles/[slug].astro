@@ -1,0 +1,70 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { listArticles } from "../../lib/articles";
+import { CATEGORY_LABELS, TAG_LABELS } from "../../data/taxonomy";
+import { Image } from "astro:assets";
+
+export async function getStaticPaths() {
+  const articles = await listArticles();
+
+  return articles.map((article) => ({
+    params: { slug: article.data.slug },
+    props: { article },
+  }));
+}
+
+interface Props {
+  article: CollectionEntry<"articles">;
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+const publishedDate = article.data.pubDate.toISOString().slice(0, 10);
+const updatedDate = article.data.updatedDate?.toISOString().slice(0, 10);
+---
+
+<Layout title={article.data.title} description={article.data.description}>
+  <main>
+    <a href="/articles/">回到文章列表</a>
+
+    <article>
+      <h1>{article.data.title}</h1>
+      <p>
+        發布日期：<time datetime={publishedDate}>{publishedDate}</time>
+      </p>
+      {
+        updatedDate && (
+          <p>
+            更新日期：<time datetime={updatedDate}>{updatedDate}</time>
+          </p>
+        )
+      }
+      <p>
+        分類：
+        <a href={`/categories/${article.data.category}/`}>
+          {CATEGORY_LABELS[article.data.category]}
+        </a>
+      </p>
+      {
+        article.data.tags.length > 0 && (
+          <p>
+            標籤：{article.data.tags.map((tag, index) => (
+              <Fragment>
+                {index > 0 && "、"}
+                <a href={`/tags/${tag}/`}>{TAG_LABELS[tag]}</a>
+              </Fragment>
+            ))}
+          </p>
+        )
+      }
+      <p>{article.data.description}</p>
+      {
+        article.data.cover && (
+          <Image src={article.data.cover.src} alt={article.data.cover.alt} />
+        )
+      }
+      <Content />
+    </article>
+  </main>
+</Layout>

@@ -1,0 +1,21 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { TAG_IDS, TAG_LABELS } from "../../data/taxonomy";
+---
+
+<Layout title="所有標籤">
+  <main>
+    <a href="/articles/">所有文章</a>
+    <h1>所有標籤</h1>
+
+    <ul>
+      {
+        TAG_IDS.map((tag) => (
+          <li>
+            <a href={`/tags/${tag}/`}>{TAG_LABELS[tag]}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</Layout>

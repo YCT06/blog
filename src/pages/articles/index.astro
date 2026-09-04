@@ -1,0 +1,40 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { listArticles } from "../../lib/articles";
+import { CATEGORY_IDS, CATEGORY_LABELS } from "../../data/taxonomy";
+
+const articles = await listArticles();
+---
+
+<Layout title="所有文章">
+  <main>
+    <h1>所有文章</h1>
+    <nav aria-label="文章分類">
+      <ul>
+        {
+          CATEGORY_IDS.map((category) => (
+            <li>
+              <a href={`/categories/${category}/`}>
+                {CATEGORY_LABELS[category]}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <ul>
+      {
+        articles.map((article) => (
+          <li>
+            <h2>
+              <a href={`/articles/${article.data.slug}/`}>
+                {article.data.title}
+              </a>
+            </h2>
+            <p>{article.data.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</Layout>

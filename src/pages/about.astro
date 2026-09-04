@@ -1,0 +1,15 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const description =
+  "蔡鎰群的個人筆記，記錄程式開發、數位創作、語言學習、生活隨筆與閱讀心得。";
+---
+
+<Layout title="關於本站" description={description}>
+  <main>
+    <h1>關於本站</h1>
+    <p>{description}</p>
+    <!-- 個人介紹與正式文案待網站完成後補上。 -->
+    <p><a href="/articles/">瀏覽所有文章</a></p>
+  </main>
+</Layout>
