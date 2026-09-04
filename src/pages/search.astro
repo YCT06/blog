@@ -2,13 +2,114 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="搜尋文章">
-  <main>
-    <h1>搜尋文章</h1>
-    <p>全文搜尋功能尚未啟用，目前可以透過文章列表、分類或標籤尋找文章。</p>
-    <ul>
-      <li><a href="/articles/">瀏覽文章與分類</a></li>
-      <li><a href="/tags/">瀏覽所有標籤</a></li>
-    </ul>
-  </main>
-</Layout>
+<Layout title="搜尋文章"
+  ><main id="main-content" tabindex="-1" class="search-page">
+    <header class="search-intro">
+      <p class="overline">搜尋筆記</p><div>
+        <h1 data-query-title>搜尋文章</h1><a
+          class="text-link"
+          href="#search-help">搜尋功能說明</a>
+      </div><span>全文搜尋將於後續階段啟用。</span>
+    </header>
+    <section class="search-empty" id="search-help">
+      <span aria-hidden="true">尋</span><h2>全文搜尋尚未啟用</h2><p>
+        目前可以先從分類與標籤尋找文章；此頁尚未查詢搜尋索引。
+      </p><div>
+        <a href="/articles/">瀏覽文章與分類</a><a href="/tags/">查看全部標籤</a>
+      </div>
+    </section>
+  </main></Layout
+>
+<script>
+  const query = new URLSearchParams(location.search).get("q")?.trim();
+  const title = document.querySelector("[data-query-title]");
+  const input = document.querySelector<HTMLInputElement>(".search input");
+  if (query && title) {
+    title.textContent = "「" + query + "」";
+    if (input) input.value = query;
+  }
+</script>
+<style>
+  .search-page {
+    padding-top: 54px;
+  }
+  .search-intro {
+    min-height: 290px;
+    padding: 52px 42px 58px;
+    border-bottom: 2px solid var(--line);
+  }
+  .search-intro > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 30px;
+  }
+  .search-intro h1 {
+    overflow-wrap: anywhere;
+    margin: 0 0 22px;
+    font: 700 clamp(44px, 6vw, 70px)/1.3 var(--font-sans);
+  }
+  .search-intro > span {
+    color: var(--muted);
+    font-size: var(--text-meta);
+  }
+  .search-empty {
+    display: grid;
+    justify-items: center;
+    padding: 90px 20px 50px;
+    text-align: center;
+  }
+  .search-empty > span {
+    display: grid;
+    place-items: center;
+    width: 68px;
+    height: 82px;
+    color: #fff8eb;
+    background: var(--accent);
+    font: 700 28px var(--font-sans);
+  }
+  .search-empty h2 {
+    margin: 28px 0 8px;
+    font: 700 25px var(--font-sans);
+  }
+  .search-empty p {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--text-ui);
+  }
+  .search-empty div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 28px;
+  }
+  .search-empty a {
+    padding: 7px 11px;
+    border: 1px solid var(--line-soft);
+    border-radius: 99px;
+    background: transparent;
+    font-size: var(--text-ui);
+  }
+  .search-empty a:hover {
+    color: var(--link);
+    background: var(--hover);
+  }
+  @media (max-width: 760px) {
+    .search-intro {
+      min-height: 250px;
+      padding: 38px 8px 44px;
+    }
+    .search-intro > div {
+      display: block;
+    }
+    .search-intro h1 {
+      font-size: 40px;
+    }
+  }
+  @media (max-width: 760px) {
+    .search-page {
+      padding-top: 20px;
+    }
+  }
+</style>

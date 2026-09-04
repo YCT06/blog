@@ -3,12 +3,42 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="404：找不到頁面">
-  <main>
-    <h1>404：找不到頁面</h1>
-    <p>這個網址可能有誤，或頁面已經移動。</p>
-    <ul>
-      <li><a href="/">回到首頁</a></li>
-      <li><a href="/articles/">瀏覽所有文章</a></li>
-    </ul>
+  <main id="main-content" tabindex="-1">
+    <p class="overline">Page not found</p><span
+      class="number"
+      aria-hidden="true">404</span
+    ><h1>這一頁，暫時找不到。</h1><p>這個網址可能有誤，或頁面已經移動。</p><div>
+      <a class="text-link" href="/">← 回到首頁</a><a
+        class="text-link"
+        href="/articles/">瀏覽所有文章 →</a
+      >
+    </div>
   </main>
 </Layout>
+<style>
+  main {
+    padding: 70px 24px;
+    text-align: center;
+  }
+  .number {
+    display: block;
+    font-size: clamp(90px, 16vw, 160px);
+    line-height: 1.2;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+  }
+  h1 {
+    font-size: clamp(25px, 4vw, 36px);
+    margin-top: 26px;
+  }
+  main > p:not(.overline) {
+    color: var(--muted);
+  }
+  main > div {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px 32px;
+  }
+</style>

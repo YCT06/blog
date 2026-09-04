@@ -1,44 +1,51 @@
 ---
+import "../styles/tokens.css";
+import "../styles/global.css";
+import SiteHeader from "../components/site/SiteHeader.astro";
+import SiteRail from "../components/site/SiteRail.astro";
+import SiteFooter from "../components/site/SiteFooter.astro";
+import { site } from "../data/site";
 interface Props {
   title?: string;
   description?: string;
 }
-
-const { title = "蔡鎰群的個人筆記", description } = Astro.props;
+const { title = site.title, description = site.description } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="zh-Hant">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline src="/scripts/theme.js"></script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    {description && <meta name="description" content={description} />}
+    <title>{title === site.title ? title : `${title}｜${site.title}`}</title>
+    <meta name="description" content={description} />
   </head>
   <body>
-    <header>
-      <nav aria-label="主要導覽">
-        <ul>
-          <li><a href="/">首頁</a></li>
-          <li><a href="/articles/">所有文章</a></li>
-          <li><a href="/tags/">所有標籤</a></li>
-          <li><a href="/search/">搜尋</a></li>
-          <li><a href="/about/">關於本站</a></li>
-        </ul>
-      </nav>
-    </header>
-    <slot />
+    <a class="skip-link" href="#main-content">跳至主要內容</a>
+    <div class="site-shell"><SiteHeader /><slot /><SiteFooter /></div>
+    <SiteRail />
   </body>
 </html>
-
 <style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
+  .site-shell {
+    width: min(1120px, calc(100% - 48px));
+    min-height: 100vh;
+    margin: auto;
+    padding-bottom: 86px;
+  }
+  @media (min-width: 761px) and (max-width: 1240px) {
+    .site-shell {
+      width: calc(100% - 130px);
+      margin-left: 24px;
+    }
+  }
+  @media (max-width: 760px) {
+    .site-shell {
+      width: min(100% - 32px, 1120px);
+      padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px));
+    }
   }
 </style>

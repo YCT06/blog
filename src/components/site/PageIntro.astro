@@ -1,0 +1,158 @@
+---
+import { CATEGORY_IDS } from "../../data/taxonomy";
+import type { Article } from "../../lib/presentation";
+interface Props {
+  kind?: "archive" | "tags";
+  title: string;
+  eyebrow: string;
+  description?: string;
+  articles: Article[];
+  tagCount?: number;
+}
+const {
+  kind = "archive",
+  title,
+  eyebrow,
+  description,
+  articles,
+  tagCount = 0,
+} = Astro.props;
+const firstYear = articles.length
+  ? Math.min(...articles.map((a) => a.data.pubDate.getUTCFullYear()))
+  : undefined;
+---
+
+<header class={kind === "archive" ? "archive-intro" : "tag-intro"}>
+  <div>
+    <p class="overline">{eyebrow}</p><h1>{title}</h1>{
+      description && <p>{description}</p>
+    }
+  </div>
+  {
+    kind === "archive" ? (
+      <dl>
+        <div>
+          <>
+            <dt>{CATEGORY_IDS.length}</dt>
+            <dd>個分類</dd>
+          </>
+        </div>
+        {firstYear && (
+          <div>
+            <dt>{firstYear}</dt>
+            <dd>開始記錄</dd>
+          </div>
+        )}
+      </dl>
+    ) : (
+      <div class="tag-summary">
+        <>
+          <b>{tagCount}</b>
+          <span>個標籤，散落在 {articles.length} 篇文章裡</span>
+        </>
+      </div>
+    )
+  }
+</header>
+<style>
+  .archive-intro {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: center;
+    padding: 28px 42px 34px;
+  }
+  .archive-intro h1 {
+    margin: 0;
+    font: 700 clamp(34px, 4vw, 50px)/1.28 var(--font-sans);
+    letter-spacing: 0.01em;
+  }
+  .archive-intro > div > p:last-child {
+    max-width: 560px;
+    margin: 11px 0 0;
+    color: var(--muted);
+    font: var(--text-ui)/1.7 var(--font-sans);
+  }
+  .archive-intro dl {
+    display: flex;
+    gap: 28px;
+    margin: 0;
+    padding: 12px 0 8px 30px;
+  }
+  .archive-intro dl div {
+    min-width: 72px;
+  }
+  .archive-intro dt {
+    font: 700 25px var(--font-sans);
+  }
+  .archive-intro dd {
+    margin: 5px 0 0;
+    color: var(--muted);
+    font-size: var(--text-meta);
+  }
+  .tag-intro {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: center;
+    padding: 28px 42px 34px;
+  }
+  .tag-intro h1 {
+    margin: 0;
+    font: 700 clamp(34px, 4vw, 50px)/1.28 var(--font-sans);
+  }
+  .tag-summary {
+    display: grid;
+    justify-items: end;
+    gap: 5px;
+    padding: 12px 0 8px 30px;
+  }
+  .tag-summary b {
+    font: 700 28px var(--font-sans);
+  }
+  .tag-summary span {
+    color: var(--muted);
+    font-size: var(--text-meta);
+  }
+  @media (min-width: 761px) and (max-width: 1240px) {
+    .archive-intro {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    .tag-intro,
+    .search-intro {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
+  @media (max-width: 760px) {
+    .archive-intro {
+      display: block;
+      padding: 28px 8px 32px;
+    }
+    .archive-intro h1 {
+      font-size: 36px;
+    }
+    .archive-intro dl {
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 24px;
+      padding: 16px 0 0;
+    }
+    .archive-intro dl div {
+      min-width: 0;
+    }
+    .tag-intro {
+      display: block;
+      padding: 28px 8px 32px;
+    }
+    .tag-intro h1 {
+      font-size: 36px;
+    }
+    .tag-summary {
+      justify-items: start;
+      margin-top: 24px;
+      padding: 16px 0 0;
+    }
+  }
+</style>

@@ -1,0 +1,38 @@
+---
+import Icon from "./Icon.astro";
+---
+
+<button class="theme" type="button" data-theme-toggle hidden aria-label="切換為深色主題">
+  <span class="moon"><Icon name="moon" /></span>
+  <span class="sun"><Icon name="sun" /></span>
+</button>
+<span class="sr-only" data-theme-status role="status" aria-live="polite"></span>
+<style>
+  .theme {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 43px;
+    padding: 0;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--ink);
+    margin-top: 5px;
+    border-top: 1px solid var(--line-soft);
+  }
+  .theme:hover { color: var(--link); background: var(--hover); }
+  .theme > span { display: grid; place-items: center; }
+  .theme .sun { display: none; }
+  :global(html[data-theme="dark"]) .theme .sun { display: grid; }
+  :global(html[data-theme="dark"]) .theme .moon { display: none; }
+  @media (max-width: 760px) {
+    .theme {
+      width: 44px;
+      height: 44px;
+      margin: 0 0 0 4px;
+      border-top: 0;
+      border-left: 1px solid var(--line-soft);
+    }
+  }
+</style>

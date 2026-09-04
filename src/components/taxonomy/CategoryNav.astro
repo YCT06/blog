@@ -1,0 +1,83 @@
+---
+import {
+  CATEGORY_IDS,
+  CATEGORY_LABELS,
+  type CategoryId,
+} from "../../data/taxonomy";
+interface Props {
+  current?: CategoryId;
+}
+const { current } = Astro.props;
+const items = [
+  {
+    href: "/articles/",
+    label: "全部文章",
+    active: !current,
+  },
+  ...CATEGORY_IDS.map((id) => ({
+    href: `/categories/${id}/`,
+    label: CATEGORY_LABELS[id],
+    active: current === id,
+  })),
+];
+---
+
+<nav class="categories" aria-label="文章分類">
+  {
+    items.map((item, index) => (
+      <a href={item.href} aria-current={item.active ? "page" : undefined}>
+        <>
+          <span>{String(index).padStart(2, "0")}</span>
+          <b>{item.label}</b>
+        </>
+      </a>
+    ))
+  }
+</nav>
+<style>
+  .categories {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 54px;
+    gap: 10px;
+  }
+  .categories a {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    align-items: center;
+    min-height: 74px;
+    padding: 17px 19px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--paper-raised) 55%, transparent);
+    text-align: left;
+  }
+  .categories a:hover {
+    background: var(--accent-hover);
+  }
+  .categories a[aria-current] {
+    color: var(--accent-text);
+    background: var(--accent-surface);
+  }
+  .categories a[aria-current] > span {
+    opacity: 1;
+  }
+  .categories a > span {
+    font-size: var(--text-small);
+    opacity: 0.72;
+  }
+  .categories a b {
+    font: 600 var(--text-ui) var(--font-sans);
+  }
+  @media (max-width: 760px) {
+    .categories {
+      grid-template-columns: 1fr 1fr;
+      margin-bottom: 54px;
+    }
+    .categories a {
+      grid-template-columns: auto 1fr;
+      min-height: 68px;
+      padding: 14px 12px;
+    }
+  }
+</style>

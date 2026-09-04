@@ -1,0 +1,84 @@
+---
+import { TAG_IDS, TAG_LABELS } from "../../data/taxonomy";
+const tags = TAG_IDS.map((id) => ({
+  id,
+  label: TAG_LABELS[id],
+})).sort((a, b) => a.label.localeCompare(b.label, "zh-Hant"));
+---
+
+<section class="tag-directory" aria-labelledby="tag-heading">
+  <header><h2 id="tag-heading">全部標籤</h2><span>依標籤名稱排列</span></header>
+  <ul class="tag-index-grid">
+    {
+      tags.map((tag) => (
+        <li>
+          <a href={`/tags/${tag.id}/`}>
+            <>
+              <span># {tag.label}</span>
+            </>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+<style>
+  .tag-directory {
+    padding-top: 46px;
+  }
+  .tag-directory > header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding-bottom: 15px;
+  }
+  .tag-directory h2 {
+    margin: 0;
+    font: 700 27px var(--font-sans);
+  }
+  .tag-directory header span {
+    color: var(--muted);
+    font-size: var(--text-meta);
+  }
+  .tag-index-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px 24px;
+    padding-top: 16px;
+  }
+  .tag-index-grid a {
+    display: flex;
+    align-items: center;
+    min-height: 64px;
+    padding: 15px 18px;
+    border-radius: 8px;
+    background: var(--paper-raised);
+    text-align: left;
+  }
+  .tag-index-grid a:hover {
+    background: var(--hover);
+    color: var(--link);
+  }
+  .tag-index-grid a span {
+    font: 600 var(--text-ui) var(--font-sans);
+  }
+  @media (max-width: 760px) {
+    .tag-directory {
+      padding-top: 36px;
+    }
+    .tag-index-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  li {
+    min-width: 0;
+  }
+  .tag-index-grid a {
+    height: 100%;
+  }
+</style>

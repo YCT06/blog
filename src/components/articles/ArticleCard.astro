@@ -1,0 +1,126 @@
+---
+import ArticleCover from "./ArticleCover.astro";
+import { dateLabel, type Article } from "../../lib/presentation";
+import { TAG_LABELS } from "../../data/taxonomy";
+interface Props {
+  article: Article;
+}
+const { article } = Astro.props;
+const { title, description, slug, tags, pubDate } = article.data;
+---
+
+<article class="card">
+  <ArticleCover article={article} />
+  <div class="body">
+    {
+      tags.length > 0 && (
+        <div class="labels">
+          {tags.map((tag) => (
+            <a href={`/tags/${tag}/`}>{TAG_LABELS[tag]}</a>
+          ))}
+        </div>
+      )
+    }
+    <h3><a class="title" href={`/articles/${slug}/`}>{title}</a></h3>
+    <p>{description}</p><time datetime={dateLabel(pubDate)}
+      >{dateLabel(pubDate).replaceAll("-", " / ")}</time
+    >
+  </div>
+</article>
+<style>
+  .card {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--line-soft) 55%, transparent);
+    border-radius: 10px;
+    background: var(--paper-raised);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--ink) 4%, transparent);
+    cursor: pointer;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--ink) 7%, transparent);
+  }
+  .card:focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: 3px;
+  }
+  .body {
+    display: flex;
+    flex-direction: column;
+    min-height: 270px;
+    padding: 20px 22px 18px;
+  }
+  .labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .labels a {
+    padding: 4px 7px;
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    border-radius: 3px;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 7%, transparent);
+    font-size: var(--text-meta);
+  }
+  .body h3 {
+    margin: 0 0 12px;
+    font: 600 var(--text-card-title)/1.55 var(--font-sans);
+  }
+  .body p {
+    display: -webkit-box;
+    overflow: hidden;
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--text-ui);
+    line-height: 1.8;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+  .body time {
+    margin-top: auto;
+    padding-top: 22px;
+    color: var(--faint);
+    font-size: var(--text-meta);
+    letter-spacing: 0.06em;
+  }
+  @media (max-width: 760px) {
+    .body {
+      min-height: 240px;
+    }
+  }
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .body {
+    flex: 1;
+  }
+  .labels a {
+    position: relative;
+    z-index: 2;
+  }
+  .labels a:hover {
+    text-decoration: underline;
+  }
+  .title::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .card:focus-within {
+    outline: 2px solid var(--link);
+    outline-offset: 3px;
+  }
+  .title:focus-visible {
+    outline: none;
+    text-decoration: underline;
+  }
+</style>

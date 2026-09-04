@@ -1,40 +1,30 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import PageIntro from "../../components/site/PageIntro.astro";
+import CategoryNav from "../../components/taxonomy/CategoryNav.astro";
+import ArticleList from "../../components/articles/ArticleList.astro";
 import { listArticles } from "../../lib/articles";
-import { CATEGORY_IDS, CATEGORY_LABELS } from "../../data/taxonomy";
-
 const articles = await listArticles();
 ---
 
-<Layout title="所有文章">
-  <main>
-    <h1>所有文章</h1>
-    <nav aria-label="文章分類">
-      <ul>
-        {
-          CATEGORY_IDS.map((category) => (
-            <li>
-              <a href={`/categories/${category}/`}>
-                {CATEGORY_LABELS[category]}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
-    <ul>
-      {
-        articles.map((article) => (
-          <li>
-            <h2>
-              <a href={`/articles/${article.data.slug}/`}>
-                {article.data.title}
-              </a>
-            </h2>
-            <p>{article.data.description}</p>
-          </li>
-        ))
-      }
-    </ul>
-  </main>
-</Layout>
+<Layout title="所有文章"
+  ><main id="main-content" tabindex="-1" class="archive-page">
+    <PageIntro
+      title="所有筆記，依脈絡累積。"
+      eyebrow="文章總覽"
+      description="依分類瀏覽，再用標籤串起跨領域內容。"
+      articles={articles}
+    />
+    <CategoryNav /><ArticleList articles={articles} />
+  </main></Layout
+>
+<style>
+  .archive-page {
+    padding-top: 28px;
+  }
+  @media (max-width: 760px) {
+    .archive-page {
+      padding-top: 20px;
+    }
+  }
+</style>

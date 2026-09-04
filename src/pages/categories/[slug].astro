@@ -1,48 +1,50 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import PageIntro from "../../components/site/PageIntro.astro";
+import CategoryNav from "../../components/taxonomy/CategoryNav.astro";
+import ArticleList from "../../components/articles/ArticleList.astro";
 import { listArticles } from "../../lib/articles";
 import {
   CATEGORY_IDS,
   CATEGORY_LABELS,
   type CategoryId,
 } from "../../data/taxonomy";
-
 export function getStaticPaths() {
   return CATEGORY_IDS.map((category) => ({
     params: { slug: category },
     props: { category },
   }));
 }
-
 interface Props {
   category: CategoryId;
 }
-
 const { category } = Astro.props;
-const categoryName = CATEGORY_LABELS[category];
-const articles = await listArticles({ category });
+const allArticles = await listArticles();
+const articles = allArticles.filter((a) => a.data.category === category);
 ---
 
-<Layout title={categoryName}>
-  <main>
-    <a href="/articles/">所有文章</a>
-    <h1>{categoryName}</h1>
-
-    {articles.length === 0 && <p>這個分類目前還沒有文章。</p>}
-
-    <ul>
-      {
-        articles.map((article) => (
-          <li>
-            <h2>
-              <a href={`/articles/${article.data.slug}/`}>
-                {article.data.title}
-              </a>
-            </h2>
-            <p>{article.data.description}</p>
-          </li>
-        ))
-      }
-    </ul>
-  </main>
-</Layout>
+<Layout title={CATEGORY_LABELS[category]}
+  ><main id="main-content" tabindex="-1" class="archive-page">
+    <PageIntro
+      title="所有筆記，依脈絡累積。"
+      eyebrow="文章總覽"
+      description="依分類瀏覽，再用標籤串起跨領域內容。"
+      articles={allArticles}
+    />
+    <CategoryNav current={category} /><ArticleList
+      articles={articles}
+      title={CATEGORY_LABELS[category]}
+      emptyMessage="這個分類目前還沒有文章。"
+    />
+  </main></Layout
+>
+<style>
+  .archive-page {
+    padding-top: 28px;
+  }
+  @media (max-width: 760px) {
+    .archive-page {
+      padding-top: 20px;
+    }
+  }
+</style>

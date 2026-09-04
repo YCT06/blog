@@ -1,15 +1,277 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
-const description =
-  "蔡鎰群的個人筆記，記錄程式開發、數位創作、語言學習、生活隨筆與閱讀心得。";
+import { site } from "../data/site";
+import Icon from "../components/site/Icon.astro";
+import { CATEGORY_IDS, CATEGORY_LABELS } from "../data/taxonomy";
 ---
 
-<Layout title="關於本站" description={description}>
-  <main>
-    <h1>關於本站</h1>
-    <p>{description}</p>
-    <!-- 個人介紹與正式文案待網站完成後補上。 -->
-    <p><a href="/articles/">瀏覽所有文章</a></p>
-  </main>
-</Layout>
+<Layout title="關於本站"
+  ><main id="main-content" tabindex="-1" class="about-page">
+    <section class="about-layout">
+      <aside class="about-profile">
+        <div class="about-portrait" aria-hidden="true">
+          <i></i><span>蔡</span>
+        </div>
+        <h1>{site.author}</h1><p class="about-romanized">Tsai, Yi-Chiun</p>
+        <p class="about-role">記錄學習、創作與生活</p>
+        <dl>
+          <div><dt>所在</dt><dd>臺灣</dd></div><div>
+            <dt>這裡</dt><dd>個人公開筆記</dd>
+          </div>
+        </dl>
+        {
+          site.links.length > 0 && (
+            <nav class="about-social" aria-label="作者連結">
+              {site.links.map((link) => (
+                <a href={link.href} aria-label={link.label}>
+                  <Icon name={link.icon} />
+                </a>
+              ))}
+            </nav>
+          )
+        }
+      </aside>
+      <article class="about-content">
+        <h2>「哈囉，你好！」</h2>
+        <p>
+          你好，我是鎰群。我喜歡拆解一件事情如何運作，也喜歡把理解的過程重新整理成文字。
+        </p>
+        <p>
+          除了程式開發，我也持續練習繪圖、學習語言，並記下閱讀與生活裡值得留下的片段。寫下來不只是為了分享，也是在替未來的自己保留當時思考的脈絡。
+        </p>
+        <h3>關於這個網站</h3>
+        <p>
+          這裡不是一套完成的知識庫，而是一份會繼續生長的公開筆記。文章可能隨著理解加深而修正；如果內容因為時間或工具改版而過期，也歡迎告訴我。
+        </p>
+        <p>
+          我希望這裡保有一點整理過的秩序，也保留生活不一定需要結論的餘白。
+        </p>
+        <h3>我會寫什麼</h3><p>
+          內容圍繞五個主要方向。它們各自有分類，也會透過標籤彼此連接。
+        </p>
+        <div class="about-topics">
+          {
+            CATEGORY_IDS.map((category, index) => (
+              <a href={`/categories/${category}/`}>
+                <>
+                  <small>0{index + 1}</small>
+                  <b>{CATEGORY_LABELS[category]}</b>
+                  <span aria-hidden="true">→</span>
+                </>
+              </a>
+            ))
+          }
+        </div>
+      </article>
+    </section>
+  </main></Layout
+>
+<style>
+  .about-page {
+    padding-top: 54px;
+  }
+  .about-layout {
+    display: grid;
+    grid-template-columns: 340px minmax(0, 1fr);
+    overflow: hidden;
+  }
+  .about-profile {
+    padding: 38px 32px;
+    border-radius: 12px;
+    align-self: start;
+    background: color-mix(in srgb, var(--paper-raised) 82%, transparent);
+  }
+  .about-portrait {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    aspect-ratio: 1 / 0.86;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: 8px;
+    color: #fff8eb;
+    background-color: #345b68;
+    background-image: repeating-linear-gradient(
+      135deg,
+      transparent 0 19px,
+      #f3efe51b 20px 21px
+    );
+  }
+  .about-portrait::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 185px;
+    height: 185px;
+    border-radius: 50%;
+    background: #b44736;
+  }
+  .about-portrait i {
+    position: absolute;
+    width: 225px;
+    height: 150px;
+    border: 1px solid #fff8eb66;
+    border-radius: 50%;
+    transform: rotate(-12deg);
+  }
+  .about-portrait span {
+    display: grid;
+    place-items: center;
+    width: 78px;
+    height: 96px;
+    border: 1px solid #fff8ebbb;
+    background: #a84032e8;
+    box-shadow: 6px 7px 0 #17201d32;
+    font: 700 34px var(--font-sans);
+  }
+  .about-profile h1 {
+    margin: 28px 0 3px;
+    font: 700 29px var(--font-sans);
+    letter-spacing: 0.08em;
+  }
+  .about-romanized {
+    margin: 0;
+    color: var(--faint);
+    font-size: var(--text-small);
+    letter-spacing: 0.14em;
+  }
+  .about-role {
+    margin: 18px 0 0;
+    color: var(--muted);
+    font: var(--text-ui)/1.8 var(--font-sans);
+  }
+  .about-profile dl {
+    display: grid;
+    gap: 11px;
+    margin: 26px 0 0;
+    padding: 20px 0;
+  }
+  .about-profile dl div {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 12px;
+  }
+  .about-profile dt {
+    color: var(--accent);
+    font-size: var(--text-meta);
+  }
+  .about-profile dd {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--text-meta);
+  }
+  .about-social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 22px;
+  }
+  .about-social a {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--link);
+  }
+  .about-social a:hover {
+    background: var(--hover);
+  }
+  .about-social :global(svg) {
+    width: 19px;
+    height: 19px;
+  }
+  .about-content {
+    min-width: 0;
+    padding: 58px 58px 70px;
+  }
+  .about-content h2 {
+    margin: 0 0 28px;
+    font: 700 clamp(34px, 4vw, 48px) var(--font-sans);
+  }
+  .about-content h3 {
+    margin: 2.1em 0 0.65em;
+    font: 700 27px var(--font-sans);
+  }
+  .about-content > p {
+    margin: 0 0 1.25em;
+    color: var(--muted);
+    font: var(--text-body)/1.8 var(--font-sans);
+  }
+  .about-topics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 30px;
+    gap: 8px 16px;
+  }
+  .about-topics a {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 13px;
+    align-items: center;
+    min-height: 60px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    background: var(--paper-raised);
+    text-align: left;
+  }
+  .about-topics a:hover {
+    color: var(--link);
+    background: var(--hover);
+  }
+  .about-topics a small {
+    color: var(--faint);
+    font-size: var(--text-small);
+  }
+  .about-topics a b {
+    font: 600 var(--text-ui) var(--font-sans);
+  }
+  .about-topics a span {
+    color: var(--link);
+  }
+  @media (min-width: 761px) and (max-width: 1240px) {
+    .about-layout {
+      grid-template-columns: 290px minmax(0, 1fr);
+    }
+    .about-profile {
+      padding: 28px 24px;
+    }
+    .about-content {
+      padding-right: 34px;
+      padding-left: 38px;
+    }
+  }
+  @media (max-width: 760px) {
+    .about-page {
+      padding-top: 20px;
+    }
+    .about-layout {
+      display: block;
+      border-radius: 8px;
+    }
+    .about-profile {
+      padding: 24px;
+    }
+    .about-portrait {
+      max-height: 260px;
+    }
+    .about-content {
+      padding: 34px 24px 50px;
+    }
+    .about-content h2 {
+      font-size: 34px;
+    }
+    .about-content h3 {
+      font-size: 24px;
+    }
+    .about-content > p {
+      font-size: var(--text-body);
+    }
+    .about-topics {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

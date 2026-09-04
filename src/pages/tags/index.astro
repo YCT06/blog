@@ -1,21 +1,31 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { TAG_IDS, TAG_LABELS } from "../../data/taxonomy";
+import PageIntro from "../../components/site/PageIntro.astro";
+import TagDirectory from "../../components/taxonomy/TagDirectory.astro";
+import { TAG_IDS } from "../../data/taxonomy";
+import { listArticles } from "../../lib/articles";
+const articles = await listArticles();
 ---
 
-<Layout title="所有標籤">
-  <main>
-    <a href="/articles/">所有文章</a>
-    <h1>所有標籤</h1>
-
-    <ul>
-      {
-        TAG_IDS.map((tag) => (
-          <li>
-            <a href={`/tags/${tag}/`}>{TAG_LABELS[tag]}</a>
-          </li>
-        ))
-      }
-    </ul>
-  </main>
-</Layout>
+<Layout title="所有標籤"
+  ><main id="main-content" tabindex="-1" class="tag-page">
+    <PageIntro
+      kind="tags"
+      title="從標籤找到內容之間的連結。"
+      eyebrow="標籤索引"
+      articles={articles}
+      tagCount={TAG_IDS.length}
+    />
+    <TagDirectory />
+  </main></Layout
+>
+<style>
+  .tag-page {
+    padding-top: 28px;
+  }
+  @media (max-width: 760px) {
+    .tag-page {
+      padding-top: 20px;
+    }
+  }
+</style>

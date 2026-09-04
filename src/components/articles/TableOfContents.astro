@@ -1,0 +1,64 @@
+---
+import type { MarkdownHeading } from "astro";
+interface Props {
+  headings: MarkdownHeading[];
+}
+const headings = Astro.props.headings.filter(
+  (h) => h.depth === 2 || h.depth === 3,
+);
+---
+
+{
+  headings.length > 0 && (
+    <nav class="toc" aria-label="文章目錄">
+      <b>這篇文章</b>
+      {headings.map((heading) => (
+        <a
+          class:list={{ nested: heading.depth === 3 }}
+          href={`#${heading.slug}`}
+        >
+          {heading.text}
+        </a>
+      ))}
+    </nav>
+  )
+}
+<style>
+  .toc {
+    position: sticky;
+    top: 30px;
+    align-self: start;
+    display: grid;
+    gap: 12px;
+    padding-top: 8px;
+    font-size: var(--text-ui);
+    line-height: 1.6;
+  }
+  .toc b {
+    margin-bottom: 10px;
+  }
+  .toc a {
+    color: var(--muted);
+  }
+  .toc a:hover {
+    color: var(--link);
+  }
+  .toc a[aria-current="location"] {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+  @media (max-width: 760px) {
+    .toc {
+      position: static;
+      margin-bottom: 40px;
+      padding: 18px;
+      border-radius: 8px;
+      background: color-mix(in srgb, var(--paper-raised) 55%, transparent);
+    }
+  }
+  .nested {
+    padding-left: 12px;
+  }
+</style>

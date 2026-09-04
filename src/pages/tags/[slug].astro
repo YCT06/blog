@@ -1,44 +1,76 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import ArticleList from "../../components/articles/ArticleList.astro";
 import { listArticles } from "../../lib/articles";
 import { TAG_IDS, TAG_LABELS, type TagId } from "../../data/taxonomy";
-
 export function getStaticPaths() {
-  return TAG_IDS.map((tag) => ({
-    params: { slug: tag },
-    props: { tag },
-  }));
+  return TAG_IDS.map((tag) => ({ params: { slug: tag }, props: { tag } }));
 }
-
 interface Props {
   tag: TagId;
 }
-
 const { tag } = Astro.props;
-const tagName = TAG_LABELS[tag];
 const articles = await listArticles({ tag });
 ---
 
-<Layout title={tagName}>
-  <main>
-    <a href="/tags/">所有標籤</a>
-    <h1>{tagName}</h1>
-
-    {articles.length === 0 && <p>這個標籤目前還沒有文章。</p>}
-
-    <ul>
-      {
-        articles.map((article) => (
-          <li>
-            <h2>
-              <a href={`/articles/${article.data.slug}/`}>
-                {article.data.title}
-              </a>
-            </h2>
-            <p>{article.data.description}</p>
-          </li>
-        ))
-      }
-    </ul>
-  </main>
-</Layout>
+<Layout title={`標籤：${TAG_LABELS[tag]}`}
+  ><main id="main-content" tabindex="-1" class="tag-page">
+    <header class="tag-result-intro">
+      <a class="text-link" href="/tags/">← 回到標籤索引</a><p>標籤</p><h1>
+        # {TAG_LABELS[tag]}
+      </h1><span>{articles.length} 篇文章</span>
+    </header>
+    <div class="tag-result-list">
+      <ArticleList
+        articles={articles}
+        title="相關筆記"
+        emptyMessage="這個標籤目前還沒有文章。"
+      />
+    </div>
+  </main></Layout
+>
+<style>
+  .tag-page {
+    padding-top: 28px;
+  }
+  .tag-result-intro {
+    padding: 50px 42px 62px;
+  }
+  .tag-result-intro > p {
+    margin: 55px 0 12px;
+    color: var(--accent);
+    font-size: var(--text-meta);
+    letter-spacing: 0.16em;
+  }
+  .tag-result-intro h1 {
+    display: inline;
+    margin: 0;
+    font: 700 clamp(44px, 6vw, 72px) var(--font-sans);
+  }
+  .tag-result-intro > span {
+    margin-left: 18px;
+    color: var(--muted);
+    font-size: var(--text-meta);
+  }
+  .tag-result-list {
+    padding-top: 62px;
+  }
+  @media (max-width: 760px) {
+    .tag-page {
+      padding-top: 20px;
+    }
+    .tag-result-intro {
+      padding: 34px 8px 45px;
+    }
+    .tag-result-intro > p {
+      margin-top: 42px;
+    }
+    .tag-result-intro > span {
+      display: block;
+      margin: 12px 0 0;
+    }
+    .tag-result-list {
+      padding-top: 46px;
+    }
+  }
+</style>

@@ -1,0 +1,107 @@
+---
+import { site } from "../../data/site";
+import Icon from "./Icon.astro";
+---
+
+<header class="site-header">
+  <a class="brand" href="/"
+    ><span>{site.title}</span><small>{site.tagline}</small></a
+  >
+  <form class="search" action="/search/" role="search">
+    <input
+      name="q"
+      type="search"
+      placeholder="輸入文章、分類或標籤"
+      aria-label="搜尋文章、分類或標籤"
+      required
+    />
+    <button type="submit" aria-label="送出搜尋"><Icon name="search" /></button>
+  </form>
+</header>
+<style>
+  .site-header {
+    min-height: 94px;
+    display: grid;
+    grid-template-columns: 1fr minmax(230px, 310px);
+    gap: 42px;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand {
+    justify-self: start;
+    display: grid;
+    gap: 5px;
+    padding: 0;
+    border: 0;
+    background: none;
+    text-align: left;
+  }
+  .brand span {
+    font: 700 19px var(--font-sans);
+    letter-spacing: 0.1em;
+  }
+  .brand small {
+    color: var(--muted);
+    font: var(--text-meta) var(--font-sans);
+    letter-spacing: 0.08em;
+  }
+  .search {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 44px;
+    gap: 4px;
+    align-items: center;
+    width: 100%;
+    padding: 0 2px 0 14px;
+    border-radius: 10px;
+    background: var(--paper-raised);
+  }
+  .search input {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+    padding: 8px 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--ink);
+    font: var(--text-ui) var(--font-sans);
+  }
+  .search input::placeholder {
+    color: var(--faint);
+    opacity: 1;
+  }
+  .search:focus-within {
+    outline: 2px solid var(--link);
+    outline-offset: 3px;
+  }
+  .search :global(svg) {
+    color: var(--link);
+  }
+  .search button {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    border-radius: 8px;
+  }
+  .search button:hover {
+    background: var(--hover);
+  }
+  @media (max-width: 760px) {
+    .site-header {
+      min-height: 126px;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      padding: 16px 0;
+    }
+    .search {
+      width: 100%;
+    }
+    .search input {
+      font-size: 16px;
+    }
+  }
+</style>

@@ -1,0 +1,164 @@
+---
+import { Image } from "astro:assets";
+import type { Article } from "../../lib/presentation";
+import { categoryMarks } from "../../lib/presentation";
+import { CATEGORY_LABELS } from "../../data/taxonomy";
+interface Props {
+  article: Article;
+  eager?: boolean;
+}
+const { article, eager = false } = Astro.props;
+const { cover, category } = article.data;
+const variants = {
+  development: "code",
+  "digital-art": "art",
+  reading: "book",
+  "language-learning": "language",
+  life: "life",
+};
+---
+
+<div
+  class:list={[
+    "cover",
+    `cover-${variants[category]}`,
+    { "has-image": !!cover },
+  ]}
+>
+  {
+    cover ? (
+      <Image
+        src={cover.src}
+        alt={cover.alt}
+        widths={[400, 720, 1100]}
+        sizes="(max-width: 760px) 100vw, 33vw"
+        loading={eager ? "eager" : "lazy"}
+      />
+    ) : (
+      <Fragment>
+        <>
+          <i aria-hidden="true" />
+          <span aria-hidden="true">{categoryMarks[category]}</span>
+          <small aria-hidden="true">{CATEGORY_LABELS[category]}</small>
+        </>
+      </Fragment>
+    )
+  }
+</div>
+<style>
+  .cover {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    isolation: isolate;
+    color: #fff8eb;
+    background-color: #345b68;
+  }
+  .cover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(180deg, transparent 45%, #17201d99);
+  }
+  .cover i {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border: 1px solid #fff8eb70;
+    border-radius: 50%;
+  }
+  .cover span {
+    display: grid;
+    place-items: center;
+    width: 62px;
+    height: 76px;
+    border: 1px solid #fff8ebbb;
+    background: #a84032e8;
+    box-shadow: 5px 5px 0 #17201d2b;
+    font: 700 27px var(--font-sans);
+  }
+  .cover small {
+    position: absolute;
+    left: 18px;
+    bottom: 14px;
+    color: #fff8eb;
+    font: 500 var(--text-meta) var(--font-sans);
+    letter-spacing: 0.14em;
+  }
+  .cover-code {
+    background-image: repeating-linear-gradient(
+      135deg,
+      transparent 0 17px,
+      #f3efe51b 18px 19px
+    );
+  }
+  .cover-art {
+    background-color: #9b6558;
+    background-image:
+      radial-gradient(circle at 28% 32%, #e7bd78 0 11%, transparent 11.5%),
+      radial-gradient(circle at 72% 64%, #294e59 0 18%, transparent 18.5%);
+  }
+  .cover-art i {
+    width: 210px;
+    height: 105px;
+    border-radius: 50%;
+    transform: rotate(-14deg);
+  }
+  .cover-book {
+    background-color: #596958;
+    background-image:
+      linear-gradient(
+        90deg,
+        transparent 48%,
+        #f3efe52c 49% 51%,
+        transparent 52%
+      ),
+      repeating-linear-gradient(0deg, transparent 0 28px, #f3efe51f 29px 30px);
+  }
+  .cover-book i {
+    width: 190px;
+    height: 124px;
+    border-radius: 2px;
+  }
+  .cover-language {
+    background-color: #596a76;
+    background-image: radial-gradient(circle, #f3efe520 1px, transparent 1.5px);
+    background-size: 15px 15px;
+  }
+  .cover-language i {
+    width: 190px;
+    height: 100px;
+    border-radius: 50% 50% 50% 8px;
+    transform: rotate(6deg);
+  }
+  .cover-life {
+    background-color: #8b7355;
+    background-image: linear-gradient(
+      115deg,
+      transparent 0 42%,
+      #e7bd784f 42.5% 57%,
+      transparent 57.5%
+    );
+  }
+  .cover-life i {
+    width: 130px;
+    height: 130px;
+    border-radius: 3px;
+    transform: rotate(45deg);
+  }
+  .cover {
+    flex-shrink: 0;
+  }
+  .cover :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .has-image::after {
+    display: none;
+  }
+</style>

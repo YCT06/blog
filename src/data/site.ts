@@ -1,0 +1,12 @@
+export const site = {
+  title: "蔡鎰群的個人筆記",
+  author: "蔡鎰群",
+  description: "記錄程式開發、數位創作、語言學習、生活隨筆與閱讀心得。",
+  tagline: "記錄學習、創作與生活",
+  // Only add real, configured destinations. An empty list renders no placeholder buttons.
+  links: [] as {
+    label: string;
+    href: string;
+    icon: "github" | "mail";
+  }[],
+};
