@@ -16,7 +16,7 @@ const contacts = [
       href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>
   </p>
   <div class="footer-built">
-    <span>使用</span><b>✦</b><span>與 Astro 打造</span>
+    <span>使用</span><Icon name="coffee" /><span>與 Astro 打造</span>
   </div>
   <div class="footer-tools">
     {
@@ -56,9 +56,10 @@ const contacts = [
     color: var(--muted);
     font-size: var(--text-small);
   }
-  .footer-built b {
+  .footer-built :global(svg) {
+    width: 15px;
+    height: 15px;
     color: var(--accent);
-    font-size: 17px;
   }
   .site-footer nav {
     justify-self: end;
