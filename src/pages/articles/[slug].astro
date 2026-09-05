@@ -91,7 +91,9 @@ const ogImage = cover
           )
         }
         <div class="prose" data-pagefind-body><Content /></div>
-        <div class="comments-slot"><Giscus /></div>
+      </div>
+      <div class:list={["reading-grid", "comments-row", { "without-toc": !hasToc }]}>
+        <Giscus />
       </div>
     </article>
   </main>
@@ -167,7 +169,7 @@ const ogImage = cover
     align-self: stretch;
     min-width: 0;
   }
-  .comments-slot {
+  .comments-row :global(.comments) {
     grid-column: 2;
     min-width: 0;
   }
