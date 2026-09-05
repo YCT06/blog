@@ -12,6 +12,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "og:generate": "node --experimental-strip-types scripts/generate-og-images.mjs",
+    "preview:cf": "wrangler dev",
     "deploy": "wrangler deploy"
   },
   "dependencies": {
