@@ -27,16 +27,30 @@ const hasToc = headings.some((h) => h.depth === 2 || h.depth === 3);
   <main id="main-content" tabindex="-1">
     <article class="reading-article">
       <a class="text-link" href="/articles/">← 回到文章總覽</a>
-      <header class="article-head">
+      <header class="article-head" data-pagefind-body>
         <p class="eyebrow">
-          <a href={`/categories/${category}/`}>{CATEGORY_LABELS[category]}</a> · <time
+          <a
+            href={`/categories/${category}/`}
+            data-pagefind-meta="category, categoryHref[href]"
+            >{CATEGORY_LABELS[category]}</a
+          > · <time
             datetime={dateLabel(pubDate)}
+            data-pagefind-meta="date"
             >{dateLabel(pubDate).replaceAll("-", ".")}</time>
         </p>
-        <h1>{title}</h1><p class="standfirst">{description}</p>
+        <h1 data-pagefind-meta="title">{title}</h1><p
+          class="standfirst"
+          data-pagefind-meta="description">{description}</p>
         {
           (tags.length > 0 || updatedDate) && (
-            <div class="tag-row">
+            <div
+              class="tag-row"
+              data-pagefind-meta={
+                tags.length > 0
+                  ? `tags:${tags.map((tag) => TAG_LABELS[tag]).join("、")}`
+                  : undefined
+              }
+            >
               {tags.map((tag) => (
                 <a href={`/tags/${tag}/`}>{TAG_LABELS[tag]}</a>
               ))}
@@ -72,7 +86,7 @@ const hasToc = headings.some((h) => h.depth === 2 || h.depth === 3);
             </aside>
           )
         }
-        <div class="prose"><Content /></div>
+        <div class="prose" data-pagefind-body><Content /></div>
       </div>
     </article>
   </main>
