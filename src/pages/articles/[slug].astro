@@ -3,6 +3,7 @@ import { render, type CollectionEntry } from "astro:content";
 import { Image, getImage } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import TableOfContents from "../../components/articles/TableOfContents.astro";
+import Giscus from "../../components/articles/Giscus.astro";
 import { listArticles } from "../../lib/articles";
 import { dateLabel, categoryOgImages } from "../../lib/presentation";
 import { CATEGORY_LABELS, TAG_LABELS } from "../../data/taxonomy";
@@ -90,6 +91,7 @@ const ogImage = cover
           )
         }
         <div class="prose" data-pagefind-body><Content /></div>
+        <div class="comments-slot"><Giscus /></div>
       </div>
     </article>
   </main>
@@ -163,6 +165,10 @@ const ogImage = cover
   }
   .reading-grid > aside {
     align-self: stretch;
+    min-width: 0;
+  }
+  .comments-slot {
+    grid-column: 2;
     min-width: 0;
   }
   .reading-grid.without-toc {

@@ -10,3 +10,10 @@ export const site = {
     icon: "github" | "mail";
   }[],
 };
+
+export const giscus = {
+  repo: "YCT06/blog",
+  repoId: "R_kgDOUMvbcg",
+  category: "Comments",
+  categoryId: "DIC_kwDOUMvbcs4DE7I8",
+};

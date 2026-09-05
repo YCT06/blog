@@ -1,0 +1,33 @@
+---
+import { giscus } from "../../data/site";
+---
+
+<section class="comments" aria-label="留言">
+  <p class="comments-note">
+    留言使用 GitHub 帳號登入，透過 GitHub Discussions
+    運作。留言內容會以你的公開 GitHub 帳號顯示，由 GitHub Discussions
+    規則管理，不屬於本站文章的 CC BY-NC 4.0 授權範圍。
+  </p>
+  <div
+    data-giscus
+    data-repo={giscus.repo}
+    data-repo-id={giscus.repoId}
+    data-category={giscus.category}
+    data-category-id={giscus.categoryId}
+  >
+  </div>
+</section>
+<script is:inline src="/scripts/giscus.js"></script>
+<style>
+  .comments {
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 2px solid var(--line);
+  }
+  .comments-note {
+    margin: 0 0 24px;
+    color: var(--muted);
+    font-size: var(--text-meta);
+    line-height: 1.7;
+  }
+</style>
