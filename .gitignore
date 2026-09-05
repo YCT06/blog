@@ -29,3 +29,6 @@ Thumbs.db
 # local planning and prototypes
 /BLOG_PLAN.md
 /prototype/
+
+# wrangler local state
+.wrangler/
