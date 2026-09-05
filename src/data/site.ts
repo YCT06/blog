@@ -17,3 +17,7 @@ export const giscus = {
   category: "Comments",
   categoryId: "DIC_kwDOUMvbcs4DE7I8",
 };
+
+export const analytics = {
+  cloudflareBeaconToken: "180085d3c5734c78bd0479f79410907a",
+};
