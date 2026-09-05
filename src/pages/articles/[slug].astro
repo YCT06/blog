@@ -1,10 +1,10 @@
 ---
 import { render, type CollectionEntry } from "astro:content";
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import TableOfContents from "../../components/articles/TableOfContents.astro";
 import { listArticles } from "../../lib/articles";
-import { dateLabel } from "../../lib/presentation";
+import { dateLabel, categoryOgImages } from "../../lib/presentation";
 import { CATEGORY_LABELS, TAG_LABELS } from "../../data/taxonomy";
 import "../../styles/prose.css";
 export async function getStaticPaths() {
@@ -21,9 +21,12 @@ const { Content, headings } = await render(article);
 const { title, description, pubDate, updatedDate, category, tags, cover } =
   article.data;
 const hasToc = headings.some((h) => h.depth === 2 || h.depth === 3);
+const ogImage = cover
+  ? (await getImage({ src: cover.src, width: 1200 })).src
+  : categoryOgImages[category];
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} image={ogImage} type="article">
   <main id="main-content" tabindex="-1">
     <article class="reading-article">
       <a class="text-link" href="/articles/">← 回到文章總覽</a>

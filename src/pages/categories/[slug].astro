@@ -9,6 +9,7 @@ import {
   CATEGORY_LABELS,
   type CategoryId,
 } from "../../data/taxonomy";
+import { categoryOgImages } from "../../lib/presentation";
 export function getStaticPaths() {
   return CATEGORY_IDS.map((category) => ({
     params: { slug: category },
@@ -23,7 +24,7 @@ const allArticles = await listArticles();
 const articles = allArticles.filter((a) => a.data.category === category);
 ---
 
-<Layout title={CATEGORY_LABELS[category]}
+<Layout title={CATEGORY_LABELS[category]} image={categoryOgImages[category]}
   ><main id="main-content" tabindex="-1" class="archive-page">
     <PageIntro
       title="所有筆記，依脈絡累積。"

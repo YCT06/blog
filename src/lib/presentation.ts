@@ -8,6 +8,13 @@ export const categoryMarks: Record<CategoryId, string> = {
   life: "日",
   reading: "讀",
 };
+export const categoryOgImages: Record<CategoryId, string> = {
+  development: "/og/development.png",
+  "digital-art": "/og/digital-art.png",
+  "language-learning": "/og/language-learning.png",
+  life: "/og/life.png",
+  reading: "/og/reading.png",
+};
 export function dateLabel(date: Date) {
   return date.toISOString().slice(0, 10);
 }
