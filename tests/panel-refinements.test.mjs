@@ -3,12 +3,12 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 const home = readFileSync(new URL("../dist/index.html", import.meta.url), "utf8");
-test("footer preserves two explicit pending contacts without RSS or theme controls", () => {
+test("footer shows configured GitHub and Email contacts without RSS or theme controls", () => {
   const footer = home.match(/<footer\b[\s\S]*?<\/footer>/)?.[0];
   assert.ok(footer);
-  assert.match(footer, /GitHub（尚未設定）/);
-  assert.match(footer, /Email（尚未設定）/);
-  assert.equal((footer.match(/aria-disabled="true"/g) || []).length, 2);
+  assert.match(footer, /<a href="https:\/\/github\.com\/YCT06" aria-label="GitHub"/);
+  assert.match(footer, /<a href="mailto:[^"]+" aria-label="Email"/);
+  assert.equal((footer.match(/aria-disabled="true"/g) || []).length, 0);
   assert.doesNotMatch(footer, /RSS|data-theme-system|href="#"/i);
   assert.doesNotMatch(footer, /<small\b|title=/);
 });
