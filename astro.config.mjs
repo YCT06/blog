@@ -10,6 +10,14 @@ export default defineConfig({
   build: {
     inlineStylesheets: "never",
   },
+  vite: {
+    build: {
+      // Scripts under Vite's default 4KB threshold get inlined as
+      // <script type="module"> with no src, which our CSP script-src
+      // (no 'unsafe-inline') then silently blocks in production.
+      assetsInlineLimit: 0,
+    },
+  },
   markdown: {
     shikiConfig: {
       themes: { light: "github-dark", dark: "github-dark" },
