@@ -4,7 +4,10 @@ export const site = {
   description: "記錄程式開發、數位創作、語言學習、生活隨筆與閱讀心得。",
   tagline: "記錄學習、創作與生活",
   // Only add real, configured destinations. An empty list renders no placeholder buttons.
-  links: [] as {
+  links: [
+    { label: "GitHub", href: "https://github.com/YCT06", icon: "github" },
+    { label: "Email", href: "mailto:x5x6600px@gmail.com", icon: "mail" },
+  ] as {
     label: string;
     href: string;
     icon: "github" | "mail";
