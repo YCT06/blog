@@ -23,7 +23,7 @@
     "esbuild": true
   },
   "devDependencies": {
-    "@astrojs/check": "0.9.10",
+    "@astrojs/check": "0.9.11",
     "@resvg/resvg-js": "^2.6.2",
     "pagefind": "1.5.2",
     "typescript": "6.0.3",
